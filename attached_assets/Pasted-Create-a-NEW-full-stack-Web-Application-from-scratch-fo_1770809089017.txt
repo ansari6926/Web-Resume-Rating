@@ -1,0 +1,115 @@
+Create a NEW full-stack Web Application from scratch for a Resume Review and Strength Evaluation System.
+
+IMPORTANT:
+- Do NOT reuse previous broken logic.
+- Use clean architecture.
+- Ensure stable data flow.
+- Avoid user-scoped resume storage.
+- Build correctly from the start.
+
+==============================
+CORE SYSTEM DESIGN
+==============================
+
+Use three main database models:
+
+1. users
+   - id
+   - name
+   - email
+   - password
+   - role (student / recruiter)
+
+2. resumes
+   - id
+   - studentId
+   - studentName
+   - filePath
+   - version
+   - createdAt
+
+3. reviews
+   - id
+   - resumeId
+   - recruiterId
+   - score (0-100)
+   - comments
+   - strengthLevel (Strong / Average / Weak)
+   - createdAt
+
+==============================
+FUNCTIONAL REQUIREMENTS
+==============================
+
+STUDENT:
+- Register & Login
+- Upload resume (PDF)
+- Each upload creates version increment
+- View their resumes
+- View review score
+- View comments
+- View colored strength bar
+
+RECRUITER:
+- Register & Login
+- View ALL student resumes (no filtering by recruiterId)
+- Open resume
+- Enter score (0-100)
+- Enter comments
+- Submit review
+
+==============================
+STRENGTH CALCULATION
+==============================
+
+Automatically compute:
+- score >= 80 → Strong (Green)
+- score between 50 and 79 → Average (Yellow)
+- score < 50 → Weak (Red)
+
+Store strengthLevel in reviews table.
+
+==============================
+CRITICAL RULES
+==============================
+
+1. Recruiter must fetch:
+   SELECT * FROM resumes ORDER BY createdAt DESC
+
+2. Reviews must be linked ONLY by resumeId.
+
+3. Student dashboard must:
+   - Fetch resumes where studentId = logged-in user
+   - Join review by resumeId
+
+4. No filtering resumes by recruiterId.
+5. No storing resumes inside user object.
+6. No rewriting architecture later.
+7. Ensure all async calls are awaited properly.
+
+==============================
+UI REQUIREMENTS
+==============================
+
+- Modern SaaS layout
+- Sidebar navigation
+- Dashboard cards
+- Resume strength progress bar with dynamic color
+- Clean color theme
+- Smooth but minimal animations
+
+==============================
+FINAL FLOW VALIDATION
+==============================
+
+1. Student uploads resume.
+2. Resume saved in resumes table.
+3. Recruiter logs in.
+4. Recruiter sees resume immediately.
+5. Recruiter submits review.
+6. Strength is calculated automatically.
+7. Student logs in and sees score, comments, and colored strength bar.
+8. Data persists after restart.
+
+Build the project step-by-step with correct backend logic first, then connect frontend.
+Ensure it works completely end-to-end.
